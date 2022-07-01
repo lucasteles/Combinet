@@ -9,7 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Combinet", "src\Combinet\Co
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{4446F415-4966-486B-97B9-A1B2DDAEAF49}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "test", "test\Combinet.Tests\test.csproj", "{784872B6-4992-4B6E-BC57-4D7FCD96F93C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Combinet.Tests", "test\Combinet.Tests\Combinet.Tests.csproj", "{784872B6-4992-4B6E-BC57-4D7FCD96F93C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
