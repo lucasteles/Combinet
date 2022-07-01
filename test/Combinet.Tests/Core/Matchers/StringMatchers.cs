@@ -1,5 +1,6 @@
 using System;
-using  Combinet;
+using Combinet;
+using Combinet.Core.Abstraction;
 using FluentAssertions;
 using NUnit.Framework;
 
@@ -7,6 +8,16 @@ namespace Combinet.Tests.Core.Matchers;
 
 public class StringMatchersTest
 {
+    [SetUp]
+    public void Setup()
+    {
+        AssertionOptions.AssertEquivalencyUsing(options =>
+            options.Using(ctx =>
+                    ctx.Subject.Should().Be(ctx.Expectation))
+                .WhenTypeIs<IObjectMatcher>());
+    }
+
+
     [Test]
     public void EqualOperatorNotEmptyMatcherTest()
     {
@@ -14,11 +25,18 @@ public class StringMatchersTest
     }
 
     [Test]
+    public void SimpleObjectAssertTest()
+    {
+        new {v = "foo"}.Should()
+            .BeEquivalentTo(new {v = M.String.NotEmpty()}, options => options.RespectingRuntimeTypes());
+    }
+
+    [Test]
     public void ComposingMatchersTest()
     {
         var data = new
         {
-            Id  = Guid.NewGuid(),
+            Id = Guid.NewGuid(),
             Name = "Lucas",
             Age = 30,
             LastName = "Teles  ",

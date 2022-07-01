@@ -1,19 +1,25 @@
 ﻿using System;
-using Combinet.Core.Abstraction;
+using System.Collections.Generic;
 
-namespace Combinet.Core.Matchers;
+namespace Combinet.Core.Abstraction;
 
-public interface IObjectMatcher<in T>
+public interface IObjectMatcher
+{
+    bool MatchEquals(object other);
+}
+
+public interface IObjectMatcher<in T> : IObjectMatcher
 {
     bool MatchEquals(T other);
 }
 
-public abstract class BaseMatcher<T> : IObjectMatcher<T>, IEquatable<T>, IComparable<T>
+public abstract class BaseMatcher<T> : IObjectMatcher<T>, IEquatable<T>, IComparable<T>,  IEqualityComparer<T>
 {
     protected readonly Guid UniqueIdentifier = Guid.NewGuid();
 
     public abstract bool MatchEquals(T other);
 
+    bool IObjectMatcher.MatchEquals(object other) => (this as IObjectMatcher<T>).MatchEquals(other);
     bool IEquatable<T>.Equals(T other) => MatchEquals(other);
 
     public override int GetHashCode() => UniqueIdentifier.GetHashCode();
@@ -26,6 +32,8 @@ public abstract class BaseMatcher<T> : IObjectMatcher<T>, IEquatable<T>, ICompar
         if (MatchEquals(other)) return 0;
         return -1;
     }
+
+    public new Type GetType() => typeof(T);
 
     public static bool operator ==(BaseMatcher<T> left, object right) => left?.Equals(right) == true;
     public static bool operator ==(object left, BaseMatcher<T> rigth) => rigth == left;
