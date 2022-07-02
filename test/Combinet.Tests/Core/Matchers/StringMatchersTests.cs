@@ -36,7 +36,7 @@ public class StringMatchersTest
             Name = "Lucas",
             Age = 30,
             LastName = "Teles  ",
-            Biography = "lorem ipsun ",
+            Biography = "lorem ipsun lucas",
             SiteUrl = "http://lucasteles.dev"
         };
 
