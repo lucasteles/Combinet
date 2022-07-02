@@ -1,10 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Linq;
 
 namespace Combinet.Core.Abstraction;
 
 public interface IObjectMatcher
 {
+    string Description { get; }
     bool MatchEquals(object other);
 }
 
@@ -13,12 +14,13 @@ public interface IObjectMatcher<in T> : IObjectMatcher
     bool MatchEquals(T other);
 }
 
-public abstract class BaseMatcher<T> : IObjectMatcher<T>, IEquatable<T>, IComparable<T>,  IEqualityComparer<T>
+public abstract class BaseMatcher<T> : IObjectMatcher<T>, IEquatable<T>, IComparable<T>
 {
     protected readonly Guid UniqueIdentifier = Guid.NewGuid();
 
     public abstract bool MatchEquals(T other);
 
+    public abstract string Description { get; }
     bool IObjectMatcher.MatchEquals(object other) => (this as IObjectMatcher<T>).MatchEquals(other);
     bool IEquatable<T>.Equals(T other) => MatchEquals(other);
 
@@ -33,8 +35,6 @@ public abstract class BaseMatcher<T> : IObjectMatcher<T>, IEquatable<T>, ICompar
         return -1;
     }
 
-    public new Type GetType() => typeof(T);
-
     public static bool operator ==(BaseMatcher<T> left, object right) => left?.Equals(right) == true;
     public static bool operator ==(object left, BaseMatcher<T> rigth) => rigth == left;
     public static bool operator !=(BaseMatcher<T> left, object right) => !(left == right);
@@ -43,6 +43,6 @@ public abstract class BaseMatcher<T> : IObjectMatcher<T>, IEquatable<T>, ICompar
     public static OrMatcher<T> operator |(BaseMatcher<T> left, BaseMatcher<T> right) => new(left, right);
     public static AndMatcher<T> operator &(BaseMatcher<T> left, BaseMatcher<T> right) => new(left, right);
 
-
     // public static implicit operator T(BaseMatcher<T> matcher) => default;
+    public override string ToString() => Description;
 }
