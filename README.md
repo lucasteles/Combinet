@@ -1,4 +1,4 @@
-# CombiNet [WIP]
+# Combinet [WIP]
 
 Assertions with matching combinators on C#
 
